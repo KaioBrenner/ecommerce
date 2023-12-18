@@ -22,7 +22,7 @@ const links = [
     title: 'My Orders',
   },
   {
-    href: '/account/logout',
+    href: '/logout',
     src: '/assets/icons/logout.svg',
     title: 'Logout',
   },
