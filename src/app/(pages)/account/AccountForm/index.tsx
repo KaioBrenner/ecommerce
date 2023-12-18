@@ -113,6 +113,7 @@ const AccountForm: React.FC = () => {
             register={register}
             error={errors.email}
             type="email"
+            
           />
           <Input name="name" label="Name" register={register} error={errors.name} />
         </Fragment>

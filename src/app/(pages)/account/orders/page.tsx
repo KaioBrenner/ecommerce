@@ -1,20 +1,24 @@
-import React from 'react'
-import { Metadata } from 'next'
-import Link from 'next/link'
+import React, { Fragment } from 'react'
+import AccountProfile from '../AccountProfile'
+import { getMeUser } from '../../../_utilities/getMeUser'
+import { Order } from '../../../../payload/payload-types'
 import { notFound } from 'next/navigation'
-
-import { Order } from '../../../payload/payload-types'
-import { Button } from '../../_components/Button'
-import { Gutter } from '../../_components/Gutter'
-import { HR } from '../../_components/HR'
-import { RenderParams } from '../../_components/RenderParams'
-import { formatDateTime } from '../../_utilities/formatDateTime'
-import { getMeUser } from '../../_utilities/getMeUser'
-import { mergeOpenGraph } from '../../_utilities/mergeOpenGraph'
+import { Gutter } from '../../../_components/Gutter'
+import Link from 'next/link'
+import { formatDateTime } from '../../../_utilities/formatDateTime'
+import { Button } from '../../../_components/Button'
+import { HR } from '../../../_components/HR'
 
 import classes from './index.module.scss'
 
-export default async function Orders() {
+const Orders = async () => {
+  
+  const { user } = await getMeUser({
+    nullUserRedirect: `/login?error=${encodeURIComponent(
+      'You must be logged in to access your account.',
+    )}&redirect=${encodeURIComponent('/account')}`,
+  })
+
   const { token } = await getMeUser({
     nullUserRedirect: `/login?error=${encodeURIComponent(
       'You must be logged in to view your orders.',
@@ -43,14 +47,19 @@ export default async function Orders() {
     console.error(error)
   }
 
+
   return (
-    <Gutter className={classes.orders}>
-      <h1>Orders</h1>
-      {(!orders || !Array.isArray(orders) || orders?.length === 0) && (
-        <p className={classes.noOrders}>You have no orders.</p>
-      )}
-      <RenderParams />
-      {orders && orders.length > 0 && (
+    <Fragment>
+      <Gutter className={classes.account}>
+        <h3>My Profile</h3>
+        <main className={classes.main}>
+          <div className={classes.accountProfile}>
+            <AccountProfile user={user} />
+          </div>
+          <aside className={classes.aside}>
+            <h3>Purchased Products</h3>
+
+            {orders && orders.length > 0 && (
         <ul className={classes.ordersList}>
           {orders?.map((order, index) => (
             <li key={order.id} className={classes.listItem}>
@@ -80,17 +89,13 @@ export default async function Orders() {
           ))}
         </ul>
       )}
-      <HR />
-      <Button href="/account" appearance="primary" label="Go to account" />
-    </Gutter>
+
+          </aside>
+        </main>
+      </Gutter>
+      
+    </Fragment>
   )
 }
 
-export const metadata: Metadata = {
-  title: 'Orders',
-  description: 'Your orders.',
-  openGraph: mergeOpenGraph({
-    title: 'Orders',
-    url: '/orders',
-  }),
-}
+export default Orders

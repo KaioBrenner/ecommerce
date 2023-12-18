@@ -12,6 +12,7 @@ import { mergeOpenGraph } from '../../_utilities/mergeOpenGraph'
 import AccountForm from './AccountForm'
 
 import classes from './index.module.scss'
+import AccountProfile from './AccountProfile'
 
 export default async function Account() {
   const { user } = await getMeUser({
@@ -22,42 +23,19 @@ export default async function Account() {
 
   return (
     <Fragment>
-      <Gutter>
-        <RenderParams className={classes.params} />
-      </Gutter>
-      <LowImpactHero
-        type="lowImpact"
-        media={null}
-        richText={[
-          {
-            type: 'h1',
-            children: [
-              {
-                text: 'Account',
-              },
-            ],
-          },
-          {
-            type: 'paragraph',
-            children: [
-              {
-                text: 'This is your account dashboard. Here you can update your account information, view your purchased products, and browse your order history. To manage all users, ',
-              },
-              {
-                type: 'link',
-                url: '/admin/collections/users',
-                children: [
-                  {
-                    text: 'login to the admin dashboard.',
-                  },
-                ],
-              },
-            ],
-          },
-        ]}
-      />
       <Gutter className={classes.account}>
-        <AccountForm />
+        <h3>My Profile</h3>
+        <main className={classes.main}>
+          <div className={classes.accountProfile}>
+            <AccountProfile user={user} />
+          </div>
+          <aside className={classes.aside}>
+            <h3>Personal Information</h3>
+            <AccountForm />
+          </aside>
+        </main>
+      </Gutter>
+      {/* <Gutter className={classes.account}>
         <HR />
         <h2>Purchased Products</h2>
         <p>
@@ -100,7 +78,7 @@ export default async function Account() {
         />
         <HR />
         <Button href="/logout" appearance="secondary" label="Log out" />
-      </Gutter>
+      </Gutter> */}
     </Fragment>
   )
 }
