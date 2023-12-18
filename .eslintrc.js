@@ -6,4 +6,12 @@ module.exports = {
   rules: {
     'prettier/prettier': ['error', { endOfLine: 'auto' }],
   },
+  overrides: [
+    {
+      files: ['path/to/ignore/file.js', 'path/to/ignore/folder/**/*.js'],
+      rules: {
+        'simple-import-sort/imports': 'off',
+      },
+    },
+  ],
 }
