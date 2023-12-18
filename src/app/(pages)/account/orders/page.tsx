@@ -12,7 +12,6 @@ import { HR } from '../../../_components/HR'
 import classes from './index.module.scss'
 
 const Orders = async () => {
-  
   const { user } = await getMeUser({
     nullUserRedirect: `/login?error=${encodeURIComponent(
       'You must be logged in to access your account.',
@@ -47,7 +46,6 @@ const Orders = async () => {
     console.error(error)
   }
 
-
   return (
     <Fragment>
       <Gutter className={classes.account}>
@@ -57,43 +55,40 @@ const Orders = async () => {
             <AccountProfile user={user} />
           </div>
           <aside className={classes.aside}>
-            <h3>Purchased Products</h3>
+            <h5>My Orders</h5>
 
             {orders && orders.length > 0 && (
-        <ul className={classes.ordersList}>
-          {orders?.map((order, index) => (
-            <li key={order.id} className={classes.listItem}>
-              <Link className={classes.item} href={`/orders/${order.id}`}>
-                <div className={classes.itemContent}>
-                  <h4 className={classes.itemTitle}>{`Order ${order.id}`}</h4>
-                  <div className={classes.itemMeta}>
-                    <p>{`Ordered On: ${formatDateTime(order.createdAt)}`}</p>
-                    <p>
-                      {'Total: '}
-                      {new Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        currency: 'usd',
-                      }).format(order.total / 100)}
-                    </p>
-                  </div>
-                </div>
-                <Button
-                  appearance="secondary"
-                  label="View Order"
-                  className={classes.button}
-                  el="button"
-                />
-              </Link>
-              {index !== orders.length - 1 && <HR />}
-            </li>
-          ))}
-        </ul>
-      )}
-
+              <ul className={classes.ordersList}>
+                {orders?.map((order, index) => (
+                  <li key={order.id} className={classes.listItem}>
+                    <Link className={classes.item} href={`/orders/${order.id}`}>
+                      <div className={classes.itemContent}>
+                        <h4 className={classes.itemTitle}>{`Order ${order.id}`}</h4>
+                        <div className={classes.itemMeta}>
+                          <p>
+                            {'Total: '}
+                            {new Intl.NumberFormat('en-US', {
+                              style: 'currency',
+                              currency: 'usd',
+                            }).format(order.total / 100)}
+                          </p>
+                          <p className={classes.orderDate}>{`Ordered On: ${formatDateTime(order.createdAt)}`}</p>
+                        </div>
+                      </div>
+                      <Button
+                        label="View Order"
+                        className={classes.button}
+                        el="button"
+                      />
+                    </Link>
+                    {index !== orders.length - 1 && <HR />}
+                  </li>
+                ))}
+              </ul>
+            )}
           </aside>
         </main>
       </Gutter>
-      
     </Fragment>
   )
 }
