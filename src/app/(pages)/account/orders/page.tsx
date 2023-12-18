@@ -81,7 +81,6 @@ const Orders = async () => {
                         el="button"
                       />
                     </Link>
-                    {index !== orders.length - 1 && <HR />}
                   </li>
                 ))}
               </ul>
